@@ -129,6 +129,9 @@ def find_cookies_button(input_driver):
         break
     return cookies_button
 
+def chrome_clear_cache(input_driver):
+    input_driver.get('chrome://settings/clearBrowserData')
+    input_driver.find_element_by_id('clearBrowsingDataConfirm')
 
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
@@ -161,7 +164,7 @@ conn.commit()
 
 options = webdriver.ChromeOptions()
 options.add_argument("user-data-dir=./profile")
-driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome()
 driver.get(base_url)
 
 cookies_button = find_cookies_button(driver)
