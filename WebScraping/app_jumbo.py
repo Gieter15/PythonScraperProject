@@ -1,4 +1,5 @@
 from logging import error
+from os import path
 from socket import timeout
 from selenium import webdriver
 import sqlite3
@@ -10,7 +11,7 @@ import re
 #TODO: make this into a class for extra fancy points?
 
 base_url = 'https://www.jumbo.com/listers/producten/'
-base_url = 'https://www.jumbo.com/listers/producten/?offSet=7625&pageSize=25'
+#base_url = 'https://www.jumbo.com/listers/producten/?offSet=7625&pageSize=25'
 db_name = 'jumbo_products.db'
 table_name = 'PRODUCTS'
 clean_table = False
@@ -158,7 +159,9 @@ qry = '''CREATE TABLE IF NOT EXISTS {}
 c.execute(qry)
 conn.commit()
 
-driver = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+options.add_argument("user-data-dir=./profile")
+driver = webdriver.Chrome(options=options)
 driver.get(base_url)
 
 cookies_button = find_cookies_button(driver)
@@ -175,9 +178,11 @@ number_of_pages = find_number_of_pages(driver)
 print('number_of_pages: {}'.format(number_of_pages))
 
 page_number = 0
-while page_number < number_of_pages:
+last_page = False
+while not last_page:
     products = []
     page_number = find_current_page_number(driver)
+    last_page = page_number == number_of_pages
     print("***page number {0} ***".format(page_number))
 
     products = find_products(driver)
