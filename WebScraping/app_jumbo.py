@@ -11,7 +11,7 @@ import re
 #TODO: make this into a class for extra fancy points?
 
 base_url = 'https://www.jumbo.com/listers/producten/'
-#base_url = 'https://www.jumbo.com/listers/producten/?offSet=7625&pageSize=25'
+base_url = 'https://www.jumbo.com/producten/?offSet=14475&pageSize=25'
 db_name = 'jumbo_products.db'
 table_name = 'PRODUCTS'
 clean_table = False
@@ -158,7 +158,8 @@ qry = '''CREATE TABLE IF NOT EXISTS {}
               [price_frac] INTEGER,
               [sale] INTEGER,
               [product_url] VARCHAR(30),
-              [record_date] date);'''.format(table_name)
+              [insert_date] date,
+              [update_date] date);'''.format(table_name)
 c.execute(qry)
 conn.commit()
 
@@ -172,6 +173,9 @@ cookies_button.click()
 
 try:
     warning_message = driver.find_element_by_xpath("//button[@class='jum-button close tertiary icon']")
+    warning_message.click()
+    warning_message.click()
+    warning_message.click()
     warning_message.click()
 except:
     print("No warning message is found")
@@ -275,21 +279,25 @@ while not last_page:
         try:
             id = product_id + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
             if product_id not in product_ids:
-                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, record_date) 
-                VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}' );'''.format(table_name, id, product_id, title, price_int, price_frac, sale, url, insert_date)
+                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, insert_date, update_date) 
+                VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(table_name, id, product_id, title, price_int, price_frac, sale, url, insert_date, insert_date)
                 c.execute(qry)
                 conn.commit()
                 print('Product: {0} inserted into table'.format(title))
             elif product_id != '-1' and (price_int != all_products[product_ids.index(product_id)][1] or price_frac != all_products[product_ids.index(product_id)][2]):
                 old_price_int = all_products[product_ids.index(product_id)][1]
                 old_price_frac = all_products[product_ids.index(product_id)][2]
-                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, record_date) 
-                VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}' );'''.format(table_name, id, product_id, title, price_int, price_frac, sale, url, insert_date)
+                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, insert_date, update_date) 
+                VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(table_name, id, product_id, title, price_int, price_frac, sale, url, insert_date, insert_date)
                 c.execute(qry)
                 conn.commit()
                 print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(title, old_price_int, old_price_frac, price_int, price_frac))
             else:
-                print('Product: {0} already exists in table with same price'.format(title))
+                qry = '''INSERT OR IGNORE INTO {0} (update_date) 
+                VALUES ('{1}');'''.format(table_name, insert_date)
+                c.execute(qry)
+                conn.commit()
+                print('Product: {0} already exists in table, with same price record update_date updated'.format(title))
         except:
             print('***Could not insert product: {0} with number {1}, skipping it***'.format(title, id))
     
