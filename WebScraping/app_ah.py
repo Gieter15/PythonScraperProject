@@ -12,7 +12,7 @@ import time
 base_url = 'https://www.ah.nl/producten'
 db_name = 'ah_products2.db'
 table_name = 'PRODUCTS'
-clean_table = False
+clean_table = True
 max_tries = 10
 all_products = []
 product_ids = []
@@ -94,6 +94,24 @@ def find_url(input_product):
         break
     return url
 
+def find_product_title(input_product):
+    retry_nr = 0
+    prd_title = ''
+    while True:
+        try:
+            prd_title = input_product.find_element_by_tag_name('a').get_attribute('title')
+        except:
+            retry_nr += 1
+            if retry_nr < max_tries:
+                print('Cant find product title, retrying...')
+                continue
+            else:
+                print('cannot find product title, dummy title is used')
+                break
+        break
+    return prd_title
+
+
 def chrome_clear_cache(input_driver):
     input_driver.get('chrome://settings/clearBrowserData')
     input_driver.find_element_by_id('clearBrowsingDataConfirm')
@@ -123,8 +141,8 @@ qry = '''CREATE TABLE IF NOT EXISTS {}
               [price_frac] INTEGER,
               [sale] INTEGER,
               [product_url] VARCHAR(30),
-              [insert_date] date,
-              [update_date] date);'''.format(table_name)
+              [date_created] date,
+              [date_modified] date);'''.format(table_name)
 c.execute(qry)
 conn.commit()
 
@@ -138,7 +156,7 @@ urls = find_product_category_links(driver)
 
 for url in urls:
     driver.get(url + '?page=30')
-    time.sleep(5)
+    time.sleep(2)
 
     try:
         popup_message = driver.find_element_by_xpath("//button[@class='popover_closeButton__2FHcJ']")
@@ -147,8 +165,10 @@ for url in urls:
         print("No popup message is found")
 
     products = find_products(driver)
-
-    for product in products:
+    updates = 0
+    inserts = 0
+    untouched = 0
+    for i, product in enumerate(products):
         product_id = -1
         insert_date = datetime.now()
         price_int = -1
@@ -168,15 +188,11 @@ for url in urls:
                 except:
                     print('***problem with obtaining price of product from string {0}. skipping***'.format(lines))
                     price_int = -1
-        if price_int != -1:
-            title = lines[-1]
 
         if '2E HALVE PRIJS' in product_text:
             sale = 1
 
-        if title == 'kies alternatief':
-            title = lines[-2] #TODO: double check this assumption
-
+        title = find_product_title(product)
         url = find_url(product)
         try:
             product_id = int([u for u in url.split('/') if u.startswith('wi')][0][2::])
@@ -187,27 +203,33 @@ for url in urls:
         try:
             id = int(str(product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
             if product_id != -1 and product_id not in product_ids:
-                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, insert_date, update_date) 
+                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
                 VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(table_name, id, product_id, title, price_int, price_frac, sale, url, insert_date, insert_date)
                 c.execute(qry)
                 conn.commit()
                 print('Product: {0} inserted into table with price {1},{2}'.format(title, price_int, price_frac))
+                inserts += 1
             elif product_id != -1 and (int(price_int) != all_products[product_ids.index(product_id)][1] or int(price_frac) != all_products[product_ids.index(product_id)][2]):
                 old_price_int = all_products[product_ids.index(product_id)][1]
                 old_price_frac = all_products[product_ids.index(product_id)][2]
-                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, insert_date, update_date) 
+                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
                 VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(table_name, id, product_id, title, price_int, price_frac, sale, url, insert_date, insert_date)
                 c.execute(qry)
                 conn.commit()
                 print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(title, old_price_int, old_price_frac, price_int, price_frac))
+                updates += 1
             else:
                 qry = '''INSERT OR IGNORE INTO {0} (update_date) 
                 VALUES ('{1}');'''.format(table_name, insert_date)
                 c.execute(qry)
                 conn.commit()
                 print('Product: {0} already exists in table, with same price record update_date updated'.format(title))
+                untouched += 1
         except:
             print('***Could not insert product: {0} with number {1}, skipping it***'.format(title, id))
+    print('{0} products analyzed, inserts: {1}, updates: {2}, untouched: {3}'.format(i, inserts, updates, untouched))
+
+
     
 
 driver.close()
