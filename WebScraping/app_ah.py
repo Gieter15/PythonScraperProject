@@ -12,7 +12,7 @@ import time
 base_url = 'https://www.ah.nl/producten'
 db_name = 'ah_products2.db'
 table_name = 'PRODUCTS'
-clean_table = True
+clean_table = False
 max_tries = 10
 all_products = []
 product_ids = []
@@ -219,7 +219,7 @@ for url in urls:
                 print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(title, old_price_int, old_price_frac, price_int, price_frac))
                 updates += 1
             else:
-                qry = '''INSERT OR IGNORE INTO {0} (update_date) 
+                qry = '''INSERT OR IGNORE INTO {0} (date_modified) 
                 VALUES ('{1}');'''.format(table_name, insert_date)
                 c.execute(qry)
                 conn.commit()
@@ -227,6 +227,7 @@ for url in urls:
                 untouched += 1
         except:
             print('***Could not insert product: {0} with number {1}, skipping it***'.format(title, id))
+            raise
     print('{0} products analyzed, inserts: {1}, updates: {2}, untouched: {3}'.format(i, inserts, updates, untouched))
 
 
