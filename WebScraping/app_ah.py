@@ -5,22 +5,24 @@ from selenium import webdriver
 import sqlite3
 from datetime import datetime
 import time
+from product import Product
+from productsDB import ProductsDB
+import re
 
 #TODO: add product category. Add amount of product, now there will be unclear titles
 
 #api_url = https://www.ah.nl/features/api/mega-menu/products
 base_url = 'https://www.ah.nl/producten'
-db_name = 'ah_products2.db'
-table_name = 'PRODUCTS'
+db_name = 'products.db'
+table_name = 'AH_PRODUCTS'
 clean_table = False
-max_tries = 10
-all_products = []
-product_ids = []
-regex = "[0-9] voor [0-9],[0-9]{2} euro"
-max_price = 0
-max_price_title = ''
+max_tries = 2
 start_time = datetime.now()
-develop_environment = True
+
+sale_1 = "[0-9] \+ [0-9] GRATIS"
+sale_2 = "[0-9] VOOR [0-9].[0-9]{2}"
+sale_3 = "[0-9][0-9]\% KORTING"
+sale_4 = "2E HALVE PRIJS"
 
 def find_product_category_links(input_driver):
     retry_nr = 0
@@ -52,7 +54,7 @@ def find_cookies_button(input_driver):
             cookies_button = input_driver.find_element_by_id('accept-cookies')
         except:
             if retry_nr < max_tries:
-                print('Cant find next_page_button, retrying...')
+                print('Cant find cookies button, retrying...')
                 continue
             else:
                 print('Maximum amount of tries reached for next_page_button, aborting...')
@@ -111,40 +113,18 @@ def find_product_title(input_product):
         break
     return prd_title
 
-
 def chrome_clear_cache(input_driver):
     input_driver.get('chrome://settings/clearBrowserData')
     input_driver.find_element_by_id('clearBrowsingDataConfirm')
 
-conn = sqlite3.connect(db_name)
-c = conn.cursor()
+db_connection = ProductsDB(db_name, table_name)
 
-if(clean_table):
-    qry = '''DROP TABLE IF EXISTS {}'''.format(table_name)
-    c.execute(qry)
-    conn.commit()
-    print('***Table is cleaned***')
-else:
-    qry = '''SELECT count(*) FROM sqlite_master WHERE type='table' AND name='{0}';'''.format(table_name)
-    run_query = c.execute(qry).fetchall()
+db_connection.clean_table() if clean_table else 0
     
-    if (run_query[0][0]):
-        qry = '''SELECT product_id, price_int, price_frac FROM {} '''.format(table_name)
-        all_products = c.execute(qry).fetchall()  #TODO: these need to be ordered by input date so that when the last version of the product is compared with new entries
-        product_ids = [pid[0] for pid in all_products]
+all_products = db_connection.get_all_products()
+product_ids = db_connection.get_all_product_ids()
 
-qry = '''CREATE TABLE IF NOT EXISTS {}
-             ([id] BIGINT PRIMARY KEY,
-              [product_id] INTEGER,
-              [product_name] VARCHAR(30),
-              [price_int] INTEGER,
-              [price_frac] INTEGER,
-              [sale] INTEGER,
-              [product_url] VARCHAR(30),
-              [date_created] date,
-              [date_modified] date);'''.format(table_name)
-c.execute(qry)
-conn.commit()
+db_connection.create_table()
 
 driver = webdriver.Chrome()
 driver.get(base_url)
@@ -156,7 +136,7 @@ urls = find_product_category_links(driver)
 
 for url in urls:
     driver.get(url + '?page=30')
-    time.sleep(2)
+    time.sleep(1)
 
     try:
         popup_message = driver.find_element_by_xpath("//button[@class='popover_closeButton__2FHcJ']")
@@ -164,74 +144,77 @@ for url in urls:
     except:
         print("No popup message is found")
 
-    products = find_products(driver)
+    html_products = find_products(driver)
     updates = 0
     inserts = 0
     untouched = 0
-    for i, product in enumerate(products):
-        product_id = -1
+    for i, html_product in enumerate(html_products):
+        product = Product()
         insert_date = datetime.now()
-        price_int = -1
-        price_frac = -1
-        title = ''
-        product_text = ''
-        sale = 0
 
-        product_text = product.text
+        product_text = html_product.text
         lines = product_text.split('\n')
 
         for line in lines:
             if not line.upper().isupper():
                 try:
-                    price_int = line.split('.')[0]
-                    price_frac = line.split('.')[1]
+                    product.price_int = int(line.split('.')[0])
+                    product.price_frac = int(line.split('.')[1])
                 except:
                     print('***problem with obtaining price of product from string {0}. skipping***'.format(lines))
-                    price_int = -1
 
-        if '2E HALVE PRIJS' in product_text:
-            sale = 1
+        if re.search(sale_1, product_text): # EXAMPLE:  "[0-9] + [0-9] GRATIS"
+            sale_text = re.search(sale_1, product_text).group().split(' ')
+            pay_amount = int(sale_text[0])
+            get_amount =  pay_amount + int(sale_text[2])
+            unit_price = round(product.get_price() * pay_amount / get_amount, 2)
+            product.set_price(unit_price)
+            product.sale = 1
+        elif re.search(sale_2, product_text): #"[0-9] VOOR [0-9].[0-9]{2}"
+            sale_text = re.search(sale_2, product_text).group().split(' ')
+            pay_amount = float(sale_text[2])
+            get_amount =  int(sale_text[0])
+            unit_price = round(pay_amount / get_amount, 2)
+            product.set_price(unit_price)
+            product.sale = 1
+        elif re.search(sale_3, product_text): #"[0-9][0-9]\% KORTING , correct price is already obtained in analyzing lines"
+            sale_text = re.search(sale_3, product_text).group().split(' ')
+            product.sale = 1
+        elif re.search(sale_4, product_text): # "2E HALVE PRIJS"
+            product.sale = 1
+            pay_amount = 2 * product.get_price() 
+            get_amount =  3
+            unit_price = round(product.get_price() * pay_amount / get_amount, 2)
+            product.set_price(unit_price)
+            product.sale = 1
 
-        title = find_product_title(product)
-        url = find_url(product)
+        product.title = find_product_title(html_product)
+        product.url = find_url(html_product)
         try:
-            product_id = int([u for u in url.split('/') if u.startswith('wi')][0][2::])
+            product.product_id = int([u for u in product.url.split('/') if u.startswith('wi')][0][2::])
         except:
             print('Product is not a single product')
             continue
 
         try:
-            id = int(str(product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
-            if product_id != -1 and product_id not in product_ids:
-                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
-                VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(table_name, id, product_id, title, price_int, price_frac, sale, url, insert_date, insert_date)
-                c.execute(qry)
-                conn.commit()
-                print('Product: {0} inserted into table with price {1},{2}'.format(title, price_int, price_frac))
+            product.id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
+            if product.product_id != -1 and product.product_id not in product_ids:
                 inserts += 1
-            elif product_id != -1 and (int(price_int) != all_products[product_ids.index(product_id)][1] or int(price_frac) != all_products[product_ids.index(product_id)][2]):
-                old_price_int = all_products[product_ids.index(product_id)][1]
-                old_price_frac = all_products[product_ids.index(product_id)][2]
-                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
-                VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(table_name, id, product_id, title, price_int, price_frac, sale, url, insert_date, insert_date)
-                c.execute(qry)
-                conn.commit()
-                print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(title, old_price_int, old_price_frac, price_int, price_frac))
+                db_connection.insert_into_db(product)
+            elif product.product_id != -1 and (int(product.price_int) != all_products[product_ids.index(product.product_id)][1] or int(product.price_frac) != all_products[product_ids.index(product.product_id)][2]):
+                old_price_int = all_products[product_ids.index(product.product_id)][1]
+                old_price_frac = all_products[product_ids.index(product.product_id)][2]
+                db_connection.update_product(product)
+                print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(product.title, old_price_int, old_price_frac, product.price_int, product.price_frac))
                 updates += 1
             else:
-                qry = '''INSERT OR IGNORE INTO {0} (date_modified) 
-                VALUES ('{1}');'''.format(table_name, insert_date)
-                c.execute(qry)
-                conn.commit()
-                print('Product: {0} already exists in table, with same price record update_date updated'.format(title))
+                db_connection.update_date_modified(product)
+                print('Product: {0} already exists in table with same price, record date_modified updated'.format(product.title))
                 untouched += 1
         except:
-            print('***Could not insert product: {0} with number {1}, skipping it***'.format(title, id))
+            print('***Could not insert product: {0} with number {1}, skipping it***'.format(product.title, product.id))
             raise
     print('{0} products analyzed, inserts: {1}, updates: {2}, untouched: {3}'.format(i, inserts, updates, untouched))
-
-
-    
 
 driver.close()
 print("***Data scraping completed. ***")

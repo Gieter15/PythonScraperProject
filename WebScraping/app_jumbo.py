@@ -11,7 +11,7 @@ import re
 #TODO: make this into a class for extra fancy points?
 
 base_url = 'https://www.jumbo.com/listers/producten/'
-base_url = 'https://www.jumbo.com/producten/?offSet=14475&pageSize=25'
+#base_url = 'https://www.jumbo.com/producten/?offSet=14475&pageSize=25'
 db_name = 'jumbo_products.db'
 table_name = 'PRODUCTS'
 clean_table = False
