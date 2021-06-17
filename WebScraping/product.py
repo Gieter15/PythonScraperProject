@@ -14,6 +14,7 @@ class Product:
         return self.price_int + self.price_frac/100
 
     def set_price(self, price):
+        price = round(float(price), 2)
         [price_int, price_frac] = str(price).split('.')
         self.price_int = int(price_int)
         self.price_frac = int(price_frac)

@@ -2,9 +2,11 @@ from logging import error
 from os import path
 from socket import timeout
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 import sqlite3
 from datetime import datetime
 import time
+
 from product import Product
 from productsDB import ProductsDB
 import re
@@ -13,6 +15,7 @@ import re
 
 #api_url = https://www.ah.nl/features/api/mega-menu/products
 base_url = 'https://www.ah.nl/producten'
+db_folder = 'databases'
 db_name = 'products.db'
 table_name = 'AH_PRODUCTS'
 clean_table = False
@@ -113,20 +116,20 @@ def find_product_title(input_product):
         break
     return prd_title
 
-def chrome_clear_cache(input_driver):
-    input_driver.get('chrome://settings/clearBrowserData')
-    input_driver.find_element_by_id('clearBrowsingDataConfirm')
-
-db_connection = ProductsDB(db_name, table_name)
+db_connection = ProductsDB(db_folder, db_name, table_name)
 
 db_connection.clean_table() if clean_table else 0
     
 all_products = db_connection.get_all_products()
 product_ids = db_connection.get_all_product_ids()
 
-db_connection.create_table()
+db_connection.create_ah_table()
 
-driver = webdriver.Chrome()
+#driver = webdriver.Chrome()
+opts = Options()
+opts.set_headless()
+assert opts.set_headless
+driver = webdriver.Firefox(options = opts)
 driver.get(base_url)
 
 cookies_button = find_cookies_button(driver)
@@ -178,13 +181,9 @@ for url in urls:
             product.set_price(unit_price)
             product.sale = 1
         elif re.search(sale_3, product_text): #"[0-9][0-9]\% KORTING , correct price is already obtained in analyzing lines"
-            sale_text = re.search(sale_3, product_text).group().split(' ')
             product.sale = 1
-        elif re.search(sale_4, product_text): # "2E HALVE PRIJS"
-            product.sale = 1
-            pay_amount = 2 * product.get_price() 
-            get_amount =  3
-            unit_price = round(product.get_price() * pay_amount / get_amount, 2)
+        elif re.search(sale_4, product_text): # "2E HALVE PRIJS"           
+            unit_price = round(product.get_price()*0.75, 2)
             product.set_price(unit_price)
             product.sale = 1
 
@@ -200,15 +199,15 @@ for url in urls:
             product.id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
             if product.product_id != -1 and product.product_id not in product_ids:
                 inserts += 1
-                db_connection.insert_into_db(product)
+                db_connection.insert_into_ah_db(product)
             elif product.product_id != -1 and (int(product.price_int) != all_products[product_ids.index(product.product_id)][1] or int(product.price_frac) != all_products[product_ids.index(product.product_id)][2]):
                 old_price_int = all_products[product_ids.index(product.product_id)][1]
                 old_price_frac = all_products[product_ids.index(product.product_id)][2]
-                db_connection.update_product(product)
+                db_connection.update_ah_product(product)
                 print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(product.title, old_price_int, old_price_frac, product.price_int, product.price_frac))
                 updates += 1
             else:
-                db_connection.update_date_modified(product)
+                db_connection.update_date_ah_modified(product)
                 print('Product: {0} already exists in table with same price, record date_modified updated'.format(product.title))
                 untouched += 1
         except:

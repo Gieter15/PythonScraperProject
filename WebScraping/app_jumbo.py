@@ -2,25 +2,25 @@ from logging import error
 from os import path
 from socket import timeout
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 import sqlite3
 from datetime import datetime, timedelta
 import time
 import math
 import re
+from product import Product
+from productsDB import ProductsDB
 
 #TODO: make this into a class for extra fancy points?
 
 base_url = 'https://www.jumbo.com/listers/producten/'
-#base_url = 'https://www.jumbo.com/producten/?offSet=14475&pageSize=25'
-db_name = 'jumbo_products.db'
-table_name = 'PRODUCTS'
+#base_url = 'https://www.jumbo.com/producten/?offSet=19800&pageSize=25'
+db_folder = 'databases'
+db_name = 'products.db'
+table_name = 'JUMBO_PRODUCTS'
 clean_table = False
-max_tries = 10
-all_products = []
-product_ids = []
+max_tries = 3
 regex = "[0-9] voor [0-9],[0-9]{2} euro"
-max_price = 0
-max_price_title = ''
 start_time = datetime.now()
 develop_environment = True
 
@@ -133,40 +133,27 @@ def chrome_clear_cache(input_driver):
     input_driver.get('chrome://settings/clearBrowserData')
     input_driver.find_element_by_id('clearBrowsingDataConfirm')
 
-conn = sqlite3.connect(db_name)
-c = conn.cursor()
 
-if(clean_table):
-    qry = '''DROP TABLE IF EXISTS {}'''.format(table_name)
-    c.execute(qry)
-    conn.commit()
-    print('***Table is cleaned***')
-else:
-    qry = '''SELECT count(*) FROM sqlite_master WHERE type='table' AND name='{0}';'''.format(table_name)
-    run_query = c.execute(qry).fetchall()
+db_connection = ProductsDB(db_folder, db_name, table_name)
+
+db_connection.clean_table() if clean_table else 0
     
-    if (run_query[0][0]):
-        qry = '''SELECT product_id, price_int, price_frac FROM {} '''.format(table_name)
-        all_products = c.execute(qry).fetchall()  #TODO: these need to be ordered by input date so that when the last version of the product is compared with new entries
-        product_ids = [pid[0] for pid in all_products]
+all_products = db_connection.get_all_products()
+product_ids = db_connection.get_all_product_ids()
 
-qry = '''CREATE TABLE IF NOT EXISTS {}
-             ([id] VARCHAR(30) PRIMARY KEY,
-              [product_id] VARCHAR(10),
-              [product_name] VARCHAR(30),
-              [price_int] INTEGER,
-              [price_frac] INTEGER,
-              [sale] INTEGER,
-              [product_url] VARCHAR(30),
-              [insert_date] date,
-              [update_date] date);'''.format(table_name)
-c.execute(qry)
-conn.commit()
+db_connection.create_jumbo_table()
 
-options = webdriver.ChromeOptions()
-options.add_argument("user-data-dir=./profile")
-driver = webdriver.Chrome()
+opts = Options()
+opts.set_headless()
+assert opts.set_headless
+driver = webdriver.Firefox(options = opts)
 driver.get(base_url)
+
+db_connection.clean_table if clean_table else 0
+all_products = db_connection.get_all_products()
+product_ids = db_connection.get_all_product_ids()
+
+db_connection.create_jumbo_table()
 
 cookies_button = find_cookies_button(driver)
 cookies_button.click()
@@ -187,120 +174,95 @@ print('number_of_pages: {}'.format(number_of_pages))
 page_number = 0
 last_page = False
 while not last_page:
-    products = []
     page_number = find_current_page_number(driver)
     last_page = page_number == number_of_pages
     print("***page number {0} ***".format(page_number))
 
     products = find_products(driver)
 
-    for product in products:
+    for html_product in products:
+
+        p = Product()
 
         try:
-            product_text = product.text
+            product_text = html_product.text
         except:
             product_text = ''
             print('Problem loading product on page {0}'.format(page_number))
         
         lines = product_text.split('\n')
 
-        title = lines[0]
+        p.title = lines[0]
         insert_date = datetime.now()
-        price_int = -1
-        price_frac = -1
-        sale = -1
-        product_id = '-1' 
-        url = ''
         if 'Binnenkort' in product_text:
-            print('{} will soon be available again'.format(title))
+            print('{} will soon be available again'.format(p.title))
 
         elif 'korting' in product_text:
             try:
                 for i, line in enumerate(lines):
                     if not line.upper().isupper(): #Check if no characters in string
-                        price_int = int(line)
-                        price_frac = int(lines[i+1])
+                        p.price_int = int(line)
+                        p.price_frac = int(lines[i+1])
                         break
-                # price_int = int(lines[5])
-                # price_frac = int(lines[6])
-                sale = 1
-                url = find_url(product)
-                product_id = url.split('/')[-1]
+                p.sale = 1
+                p.url = find_url(html_product)
+                p.product_id = p.url.split('/')[-1]
             except:
-                sale = 1
-                print('Discount found, but int parsing unsuccesfull on page {0} for product: {1}'.format(i, title))
+                p.sale = 1
+                print('Discount found, but int parsing unsuccesfull on page {0} for product: {1}'.format(page_number, p.title))
 
         elif re.search(regex, product_text):
             try:
                 sale_text = lines[-2]
                 sale_price = sale_text.split(' ')[-2]
-                sale_price_int = int(sale_price.split(',')[0])
-                sale_price_frac = int(sale_price.split(',')[1])
+                p.set_price(sale_price)
                 sale_quantity = int(sale_text.split(' ')[0])
-                sale_unit_price = ((sale_price_int*100 + sale_price_frac)/sale_quantity)/100
+                sale_unit_price = p.get_price()/sale_quantity
 
-                price_int = math.floor(sale_unit_price)
-                price_frac = round((sale_unit_price - price_int)*100)
-
-                sale = 1
-                url = find_url(product)
-                product_id = url.split('/')[-1]
+                p.set_price(sale_unit_price)
+                p.sale = 1
+                p.url = find_url(html_product)
+                p.product_id = p.url.split('/')[-1]
             except:
-                sale = 1
-                print('Discount found, but int parsing unsuccesfull on page {0} for product: {1}'.format(i, title))
+                p.sale = 1
+                print('Discount found, but int parsing unsuccesfull on page {0} for product: {1}'.format(page_number, p.title))
 
         elif 'gratis' in product_text:
             try:
-                price_int = int(lines[2])
-                price_frac = int(lines[3])
-                sale = 1
-                url = find_url(product)
-                product_id = url.split('/')[-1]
+                p.price_int = int(lines[2])
+                p.price_frac = int(lines[3])
+                p.sale = 1
+                p.url = find_url(html_product)
+                p.product_id = p.url.split('/')[-1]
             except:
-                sale = 1
-                print('Discount found, but int parsing unsuccesfull on page {0} for product: {1}'.format(i, title))
+                p.sale = 1
+                print('Discount found, but int parsing unsuccesfull on page {0} for product: {1}'.format(page_number, p.title))
 
         else:
             try:
-                price_int = int(lines[2])
-                price_frac = int(lines[3])
-                sale = 0
-                url = find_url(product)
-                product_id = url.split('/')[-1]
+                p.price_int = int(lines[2])
+                p.price_frac = int(lines[3])
+                p.url = find_url(html_product)
+                p.product_id = p.url.split('/')[-1]
             except:
-                sale = 0
-                print('No known discount found, but int parsing unsuccesfull on page {0} for product: {1}'.format(i, title))
-
-        if max_price*100 < price_int*100+price_frac:
-            max_price = price_int + price_frac/100
-            max_price_title = title
-            
+                print('No known discount found, but int parsing unsuccesfull on page {0} for product: {1}'.format(page_number, p.title))
 
         try:
-            id = product_id + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
-            if product_id not in product_ids:
-                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, insert_date, update_date) 
-                VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(table_name, id, product_id, title, price_int, price_frac, sale, url, insert_date, insert_date)
-                c.execute(qry)
-                conn.commit()
-                print('Product: {0} inserted into table'.format(title))
-            elif product_id != '-1' and (price_int != all_products[product_ids.index(product_id)][1] or price_frac != all_products[product_ids.index(product_id)][2]):
-                old_price_int = all_products[product_ids.index(product_id)][1]
-                old_price_frac = all_products[product_ids.index(product_id)][2]
-                qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, insert_date, update_date) 
-                VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(table_name, id, product_id, title, price_int, price_frac, sale, url, insert_date, insert_date)
-                c.execute(qry)
-                conn.commit()
-                print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(title, old_price_int, old_price_frac, price_int, price_frac))
+            id = p.product_id + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
+            if p.product_id not in product_ids:
+                db_connection.insert_into_jumbo_db(p)
+                print('Product: {0} inserted into table'.format(p.title))
+            elif p.product_id != '-1' and (p.price_int != all_products[product_ids.index(p.product_id)][1] or p.price_frac != all_products[product_ids.index(p.product_id)][2]):
+                old_price_int = all_products[product_ids.index(p.product_id)][1]
+                old_price_frac = all_products[product_ids.index(p.product_id)][2]
+                db_connection.update_jumbo_product(p)
+                print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(p.title, old_price_int, old_price_frac, p.price_int, p.price_frac))
             else:
-                qry = '''INSERT OR IGNORE INTO {0} (update_date) 
-                VALUES ('{1}');'''.format(table_name, insert_date)
-                c.execute(qry)
-                conn.commit()
-                print('Product: {0} already exists in table, with same price record update_date updated'.format(title))
-        except:
-            print('***Could not insert product: {0} with number {1}, skipping it***'.format(title, id))
-    
+                db_connection.update_date_jumbo_modified(p)
+                print('Product: {0} already exists in table, with same price record update_date updated'.format(p.title))
+        except:            
+            print('***Could not insert product: {0} with number {1}, skipping it***'.format(p.title, p.id))
+            raise    
     next_page_button.click()
     time.sleep(3)
 

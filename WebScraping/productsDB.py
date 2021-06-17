@@ -1,10 +1,12 @@
 import sqlite3
 from datetime import datetime
+import os
 from product import Product
 
 class ProductsDB:
     #constructor
-    def __init__(self, db_name, table_name) -> None:
+    def __init__(self, db_folder, db_name, table_name) -> None:
+        self.db_folder = db_folder
         self.db_name = db_name
         self.table_name = table_name
         self.products = []
@@ -12,13 +14,27 @@ class ProductsDB:
         self.cursor = None
 
     def start_db_connection(self):
-        self.connection = sqlite3.connect(self.db_name)
+        self.connection = sqlite3.connect(os.path.join(self.db_folder,self.db_name))
         self.cursor = self.connection.cursor()
 
-    def create_table(self):
+    def create_ah_table(self):
         qry = '''CREATE TABLE IF NOT EXISTS {}
              ([id] BIGINT PRIMARY KEY,
               [product_id] INTEGER,
+              [product_name] VARCHAR(30),
+              [price_int] INTEGER,
+              [price_frac] INTEGER,
+              [sale] INTEGER,
+              [product_url] VARCHAR(30),
+              [date_created] date,
+              [date_modified] date);'''.format(self.table_name)
+        self.cursor.execute(qry)
+        self.connection.commit()
+
+    def create_jumbo_table(self):
+        qry = '''CREATE TABLE IF NOT EXISTS {}
+             ([id] VARCHAR(30) PRIMARY KEY,
+              [product_id] VARCHAR(10),
               [product_name] VARCHAR(30),
               [price_int] INTEGER,
               [price_frac] INTEGER,
@@ -36,25 +52,46 @@ class ProductsDB:
         self.connection.commit()
         print('***Table is cleaned***')
 
-    def insert_into_db(self, product):
+    def insert_into_ah_db(self, product):
         self.start_db_connection() if not self.connection else 0
         insert_date = datetime.now()
         id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
         try:
             qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
-            VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
+            VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(self.table_name, id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
             self.cursor.execute(qry)
             self.connection.commit()
             print('Product: {0} inserted into table with price {1},{2}'.format(product.title, product.price_int, product.price_frac))
         except:
             pass
 
-    def update_product(self, product):
+    def update_ah_product(self, product):
         insert_date = datetime.now()
         qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
         VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
         self.cursor.execute(qry)
         self.connection.commit()
+
+    def insert_into_jumbo_db(self, product):
+        self.start_db_connection() if not self.connection else 0
+        insert_date = datetime.now()
+        id = str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
+        try:
+            qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
+            VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(self.table_name, id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
+            self.cursor.execute(qry)
+            self.connection.commit()
+        except:
+            raise
+
+    def update_jumbo_product(self, product):
+        self.start_db_connection() if not self.connection else 0
+        insert_date = datetime.now()
+        qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
+        VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)  
+        self.cursor.execute(qry)
+        self.connection.commit()
+
 
     def get_all_products(self):
         self.start_db_connection() if not self.connection else 0
@@ -66,10 +103,17 @@ class ProductsDB:
             self.products = self.cursor.execute(qry).fetchall() 
         return self.products
 
-    def update_date_modified(self, product):
+    def update_date_ah_modified(self, product):
         insert_date = datetime.now()
         qry = '''UPDATE {0} SET date_modified =  '{1}' 
         WHERE product_id = {2} AND price_int = {3} AND price_frac = {4};'''.format(self.table_name, insert_date, product.product_id, product.price_int, product.price_frac)
+        self.cursor.execute(qry)
+        self.connection.commit()
+
+    def update_date_jumbo_modified(self, product):
+        insert_date = datetime.now()
+        qry = '''UPDATE {0} SET date_modified =  '{1}' 
+        WHERE product_id = '{2}' AND price_int = {3} AND price_frac = {4};'''.format(self.table_name, insert_date, product.product_id, product.price_int, product.price_frac)
         self.cursor.execute(qry)
         self.connection.commit()
 
