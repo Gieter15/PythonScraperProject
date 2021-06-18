@@ -198,8 +198,9 @@ for url in urls:
         try:
             product.id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
             if product.product_id != -1 and product.product_id not in product_ids:
-                inserts += 1
                 db_connection.insert_into_ah_db(product)
+                print('Product: {0} inserted into table with price {1},{2}'.format(product.title, product.price_int, product.price_frac))
+                inserts += 1
             elif product.product_id != -1 and (int(product.price_int) != all_products[product_ids.index(product.product_id)][1] or int(product.price_frac) != all_products[product_ids.index(product.product_id)][2]):
                 old_price_int = all_products[product_ids.index(product.product_id)][1]
                 old_price_frac = all_products[product_ids.index(product.product_id)][2]

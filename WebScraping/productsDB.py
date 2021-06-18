@@ -55,18 +55,18 @@ class ProductsDB:
     def insert_into_ah_db(self, product):
         self.start_db_connection() if not self.connection else 0
         insert_date = datetime.now()
-        id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
+        product.id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
         try:
             qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
-            VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(self.table_name, id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
+            VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
             self.cursor.execute(qry)
             self.connection.commit()
-            print('Product: {0} inserted into table with price {1},{2}'.format(product.title, product.price_int, product.price_frac))
         except:
             pass
 
     def update_ah_product(self, product):
         insert_date = datetime.now()
+        product.id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
         qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
         VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
         self.cursor.execute(qry)
@@ -75,10 +75,10 @@ class ProductsDB:
     def insert_into_jumbo_db(self, product):
         self.start_db_connection() if not self.connection else 0
         insert_date = datetime.now()
-        id = str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
+        product.id = str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
         try:
             qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
-            VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(self.table_name, id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
+            VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
             self.cursor.execute(qry)
             self.connection.commit()
         except:
@@ -87,6 +87,7 @@ class ProductsDB:
     def update_jumbo_product(self, product):
         self.start_db_connection() if not self.connection else 0
         insert_date = datetime.now()
+        product.id = str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
         qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
         VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)  
         self.cursor.execute(qry)
