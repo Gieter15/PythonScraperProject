@@ -13,8 +13,8 @@ from productsDB import ProductsDB
 
 #TODO: make this into a class for extra fancy points?
 
-base_url = 'https://www.jumbo.com/listers/producten/'
-#base_url = 'https://www.jumbo.com/producten/?offSet=19800&pageSize=25'
+base_url = 'https://www.jumbo.com/producten/'
+#base_url = 'https://www.jumbo.com/producten/?offSet=12075&pageSize=25'
 db_folder = 'databases'
 db_name = 'products.db'
 table_name = 'JUMBO_PRODUCTS'
@@ -138,8 +138,8 @@ product_ids = db_connection.get_all_product_ids()
 db_connection.create_jumbo_table()
 
 opts = Options()
-#opts.set_headless()
-#assert opts.set_headless
+opts.set_headless()
+assert opts.set_headless
 driver = webdriver.Firefox(options = opts)
 driver.get(base_url)
 time.sleep(3)
