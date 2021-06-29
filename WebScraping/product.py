@@ -18,6 +18,9 @@ class Product:
         [price_int, price_frac] = str(price).split('.')
         self.price_int = int(price_int)
         self.price_frac = int(price_frac)
+    
+    def set_title(self, title):
+        self.title = title.replace('\"','\'')
 
     def get_info(self):
         print(f'Product info\nTitle: {self.title}\nPrice: {self.get_price()}\nUrl: {self.url}')
