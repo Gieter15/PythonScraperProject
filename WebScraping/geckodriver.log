@@ -3725,3 +3725,12 @@ JavaScript warning: https://pagead2.googlesyndication.com/bg/XJNuD862gf4f0nvPPAb
 * Can't use WebGL in headless mode (https://bugzil.la/1375585).
 1624973704190	Marionette	INFO	Stopped listening on port 64465
 JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+1624975602698	geckodriver	INFO	Listening on 127.0.0.1:64775
+1624975605776	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\roy\\AppData\\Local\\Temp\\rust_mozprofileKRnJEL"
+*** You are running in headless mode.
+1624975606239	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1624975607786	Marionette	INFO	Listening on port 64783
+1624975607856	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
