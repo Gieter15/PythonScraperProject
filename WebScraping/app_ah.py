@@ -152,7 +152,7 @@ for url in urls:
     inserts = 0
     untouched = 0
     for i, html_product in enumerate(html_products):
-        product = Product()
+        p = Product()
         insert_date = datetime.now()
 
         product_text = html_product.text
@@ -161,8 +161,8 @@ for url in urls:
         for line in lines:
             if not line.upper().isupper():
                 try:
-                    product.price_int = int(line.split('.')[0])
-                    product.price_frac = int(line.split('.')[1])
+                    p.price_int = int(line.split('.')[0])
+                    p.price_frac = int(line.split('.')[1])
                 except:
                     print('***problem with obtaining price of product from string {0}. skipping***'.format(lines))
 
@@ -170,49 +170,51 @@ for url in urls:
             sale_text = re.search(sale_1, product_text).group().split(' ')
             pay_amount = int(sale_text[0])
             get_amount =  pay_amount + int(sale_text[2])
-            unit_price = round(product.get_price() * pay_amount / get_amount, 2)
-            product.set_price(unit_price)
-            product.sale = 1
+            unit_price = round(p.get_price() * pay_amount / get_amount, 2)
+            p.set_price(unit_price)
+            p.sale = 1
         elif re.search(sale_2, product_text): #"[0-9] VOOR [0-9].[0-9]{2}"
             sale_text = re.search(sale_2, product_text).group().split(' ')
             pay_amount = float(sale_text[2])
             get_amount =  int(sale_text[0])
             unit_price = round(pay_amount / get_amount, 2)
-            product.set_price(unit_price)
-            product.sale = 1
+            p.set_price(unit_price)
+            p.sale = 1
         elif re.search(sale_3, product_text): #"[0-9][0-9]\% KORTING , correct price is already obtained in analyzing lines"
-            product.sale = 1
+            p.sale = 1
         elif re.search(sale_4, product_text): # "2E HALVE PRIJS"           
-            unit_price = round(product.get_price()*0.75, 2)
-            product.set_price(unit_price)
-            product.sale = 1
+            unit_price = round(p.get_price()*0.75, 2)
+            p.set_price(unit_price)
+            p.sale = 1
 
-        product.title = find_product_title(html_product)
-        product.url = find_url(html_product)
+        p.title = find_product_title(html_product)
+        p.url = find_url(html_product)
         try:
-            product.product_id = int([u for u in product.url.split('/') if u.startswith('wi')][0][2::])
+            p.product_id = int([u for u in p.url.split('/') if u.startswith('wi')][0][2::])
         except:
             print('Product is not a single product')
             continue
 
         try:
-            product.id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
-            if product.product_id != -1 and product.product_id not in product_ids:
-                db_connection.insert_into_ah_db(product)
-                print('Product: {0} inserted into table with price {1},{2}'.format(product.title, product.price_int, product.price_frac))
+            p.id = int(str(p.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
+            if p.product_id != -1 and p.product_id not in product_ids:
+                db_connection.insert_into_ah_db(p)
+                print('Product: {0} inserted into table with price {1},{2}'.format(p.title, p.price_int, p.price_frac))
                 inserts += 1
-            elif product.product_id != -1 and (int(product.price_int) != all_products[product_ids.index(product.product_id)][1] or int(product.price_frac) != all_products[product_ids.index(product.product_id)][2]):
-                old_price_int = all_products[product_ids.index(product.product_id)][1]
-                old_price_frac = all_products[product_ids.index(product.product_id)][2]
-                db_connection.update_ah_product(product)
-                print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(product.title, old_price_int, old_price_frac, product.price_int, product.price_frac))
+            elif p.product_id != -1 and (int(p.price_int) != all_products[product_ids.index(p.product_id)][1] or int(p.price_frac) != all_products[product_ids.index(p.product_id)][2]):
+                old_price_int = all_products[product_ids.index(p.product_id)][1]
+                old_price_frac = all_products[product_ids.index(p.product_id)][2]
+                db_connection.update_ah_product(p)
+                all_products[product_ids.index(p.product_id)][1] = p.price_int
+                all_products[product_ids.index(p.product_id)][2] = p.price_frac
+                print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(p.title, old_price_int, old_price_frac, p.price_int, p.price_frac))
                 updates += 1
             else:
-                db_connection.update_date_ah_modified(product)
-                print('Product: {0} already exists in table with same price, record date_modified updated'.format(product.title))
+                db_connection.update_date_ah_modified(p)
+                print('Product: {0} already exists in table with same price, record date_modified updated'.format(p.title))
                 untouched += 1
         except:
-            print('***Could not insert product: {0} with number {1}, skipping it***'.format(product.title, product.id))
+            print('***Could not insert product: {0} with number {1}, skipping it***'.format(p.title, p.id))
             raise
     print('{0} products analyzed, inserts: {1}, updates: {2}, untouched: {3}'.format(i, inserts, updates, untouched))
 

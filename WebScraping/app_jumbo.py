@@ -125,6 +125,8 @@ while not last_page:
                 old_price_int = all_products[product_ids.index(p.product_id)][1]
                 old_price_frac = all_products[product_ids.index(p.product_id)][2]
                 db_connection.update_jumbo_product(p)
+                all_products[product_ids.index(p.product_id)][1] = p.price_int
+                all_products[product_ids.index(p.product_id)][2] = p.price_frac
                 print('Product: {0} already exists but price is updated from {1},{2} to {3},{4}'.format(p.title, old_price_int, old_price_frac, p.price_int, p.price_frac))
             elif p.url != '' and p.product_id != '-1':
                 db_connection.update_date_jumbo_modified(p)

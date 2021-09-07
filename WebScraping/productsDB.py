@@ -101,20 +101,25 @@ class ProductsDB:
 
         if (run_query[0][0]):
             qry = '''SELECT product_id, price_int, price_frac FROM {} ORDER BY date_modified DESC'''.format(self.table_name)
-            self.products = self.cursor.execute(qry).fetchall() 
+            temp_products = self.cursor.execute(qry).fetchall() 
+            self.products = list([list(prd) for prd in temp_products])
         return self.products
 
     def update_date_ah_modified(self, product):
         insert_date = datetime.now()
         qry = '''UPDATE {0} SET date_modified =  '{1}' 
-        WHERE product_id = {2} AND price_int = {3} AND price_frac = {4};'''.format(self.table_name, insert_date, product.product_id, product.price_int, product.price_frac)
+        WHERE product_id = {2} AND 
+        date_created = (SELECT date_created FROM {0} WHERE product_id = {2} AND price_int = {3} AND price_frac = {4}
+        ORDER BY date_created desc LIMIT 1);'''.format(self.table_name, insert_date, product.product_id, product.price_int, product.price_frac)
         self.cursor.execute(qry)
         self.connection.commit()
 
     def update_date_jumbo_modified(self, product):
         insert_date = datetime.now()
         qry = '''UPDATE {0} SET date_modified =  '{1}' 
-        WHERE product_id = '{2}' AND price_int = {3} AND price_frac = {4};'''.format(self.table_name, insert_date, product.product_id, product.price_int, product.price_frac)
+        WHERE product_id = '{2}' AND date_created = (
+            SELECT date_created FROM {0} WHERE product_id = '{2}' AND price_int = {3} AND price_frac = {4} 
+            Order By date_created desc LIMIT 1);'''.format(self.table_name, insert_date, product.product_id, product.price_int, product.price_frac)
         self.cursor.execute(qry)
         self.connection.commit()
 

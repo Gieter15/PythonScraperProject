@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Task master for Roy</title>
+{% endblock %}
+ 
+{%  block body %}
+<select name= products method="GET" action="/">
+    {% for product in products %}
+    <option value= "{{product}}" SELECTED>{{product}}</option>"
+    {% endfor %}
+</select>
+{% endblock %}
