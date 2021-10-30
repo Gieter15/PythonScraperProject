@@ -3,14 +3,15 @@
 import pandas as pd
 from flask import Flask, render_template, request, url_for, request, url_for
 import sqlite3
+import os
 
 app = Flask(__name__)
 app.debug = True
 
 @app.route("/all_data")
 def all_data():
-
-    with sqlite3.connect("C://Users//roy//Documents//PYTHON//PythonScraperProject//WebScraping//databases//products.db") as cnx:
+    cur_dir = os.getcwd()
+    with sqlite3.connect(os.path.join(os.getcwd(),'WebScraping','databases','products.db')) as cnx:
         df = pd.read_sql_query("SELECT * FROM AH_PRODUCTS", cnx)
         return df.to_html()
 
