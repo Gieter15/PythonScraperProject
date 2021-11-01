@@ -8495,3 +8495,101 @@ JavaScript warning: https://pagead2.googlesyndication.com/bg/CtfsWAsRe2m3N424Qc1
 JavaScript warning: https://pagead2.googlesyndication.com/bg/CtfsWAsRe2m3N424Qc1nuWYtSGM1BvOIuby86xg17sc.js line 1 > eval line 6145 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
 * Can't use WebGL in headless mode (https://bugzil.la/1375585).
 1634822167505	Marionette	INFO	Stopped listening on port 63678
+1635801599178	geckodriver	INFO	Listening on 127.0.0.1:50079
+1635801602280	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofilePaVkP2"
+*** You are running in headless mode.
+1635801603501	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1635801605309	Marionette	INFO	Listening on port 50087
+1635801605457	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+1635801609020	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:237:19
+TimedPromise@chrome://marionette/content/sync.js:222:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:431:10
+webdriverClickElement@chrome://marionette/content/interaction.js:179:31
+JavaScript warning: https://pagead2.googlesyndication.com/bg/k0WdL_18o0JQ1tSTirwhWAKlI_j4jAibtndxAZll28w.js line 1 > eval line 5443 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1635802253976	geckodriver	INFO	Listening on 127.0.0.1:50359
+1635802257081	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofilewCVx3o"
+*** You are running in headless mode.
+1635802257456	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1635802258593	Marionette	INFO	Listening on port 50568
+1635802258639	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+1635802262522	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://pagead2.googlesyndication.com/bg/k0WdL_18o0JQ1tSTirwhWAKlI_j4jAibtndxAZll28w.js line 1 > eval line 7816 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1635802482754	geckodriver	INFO	Listening on 127.0.0.1:50700
+1635802485845	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofileL3CgAN"
+*** You are running in headless mode.
+1635802486216	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1635802487199	Marionette	INFO	Listening on port 53006
+1635802487416	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://pagead2.googlesyndication.com/bg/k0WdL_18o0JQ1tSTirwhWAKlI_j4jAibtndxAZll28w.js line 1 > eval line 6996 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1635802573685	geckodriver	INFO	Listening on 127.0.0.1:53121
+1635802576765	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofile9bUOIt"
+1635802577108	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1635802580098	Marionette	INFO	Listening on port 53129
+1635802580465	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+1635802837887	geckodriver	INFO	Listening on 127.0.0.1:53317
+1635802841010	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofileGfqWpv"
+1635802841481	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1635802843637	Marionette	INFO	Listening on port 53325
+1635802843686	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+1635802846270	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:237:19
+TimedPromise@chrome://marionette/content/sync.js:222:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:431:10
+webdriverClickElement@chrome://marionette/content/interaction.js:179:31
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+1635802958201	geckodriver	INFO	Listening on 127.0.0.1:53440
+1635802961342	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofilexEgYjh"
+1635802961731	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1635802963612	Marionette	INFO	Listening on port 53448
+1635802964047	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+1635802966649	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:237:19
+TimedPromise@chrome://marionette/content/sync.js:222:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:431:10
+webdriverClickElement@chrome://marionette/content/interaction.js:179:31
+1635803100172	geckodriver	INFO	Listening on 127.0.0.1:53557
+1635803103256	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofileYbnysq"
+1635803103633	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1635803105619	Marionette	INFO	Listening on port 53567
+1635803105960	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+1635803108527	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:237:19
+TimedPromise@chrome://marionette/content/sync.js:222:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:431:10
+webdriverClickElement@chrome://marionette/content/interaction.js:179:31
