@@ -8593,3 +8593,70 @@ TimedPromise/<@chrome://marionette/content/sync.js:237:19
 TimedPromise@chrome://marionette/content/sync.js:222:10
 interaction.flushEventLoop@chrome://marionette/content/interaction.js:431:10
 webdriverClickElement@chrome://marionette/content/interaction.js:179:31
+1635837286299	geckodriver	INFO	Listening on 127.0.0.1:51609
+1635837289376	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\roy\\AppData\\Local\\Temp\\rust_mozprofileAgoCS9"
+1635837290480	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1635837293752	Marionette	INFO	Listening on port 51618
+1635837294228	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-TRD7NK, line 414: unreachable code after return statement
+1635838256915	geckodriver	INFO	Listening on 127.0.0.1:59794
+1635838259997	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\roy\\AppData\\Local\\Temp\\rust_mozprofilelnaXH5"
+*** You are running in headless mode.
+1635838260533	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1635838262063	Marionette	INFO	Listening on port 59802
+1635838262181	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 6729 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 1996 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-WQK8NCZ&l=gtmdataLayer, line 407: unreachable code after return statement
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 4532 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 5004 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 3125 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 6722 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 6250 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 7171 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 408 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 4069 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 1041 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 2203 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 1484 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 5815 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 431 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 2623 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 4587 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/xS6JB0ywRAptsFOT5LlkHzkyWwWFpYCRTNQA3ELqIG4.js line 1 > eval line 6270 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1635840767033	Marionette	INFO	Stopped listening on port 59802
