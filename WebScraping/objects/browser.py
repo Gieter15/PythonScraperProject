@@ -1,10 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 
 class Browser:
     #constructor
-    def __init__(self, max_tries= 3, headless=True, wait_time = 10) -> None:
+    def __init__(self, max_tries= 3, headless=False, wait_time = 10) -> None:
         self.max_tries = max_tries
         self.headless=headless
         self.wait_time = wait_time
@@ -56,7 +57,7 @@ class Browser:
         retry_nr = 0
         while True:
             try:
-                products = self.driver.find_elements_by_class_name("product-container")
+                products = self.driver.find_elements(By.CLASS_NAME, "product-container")
             except:
                 retry_nr += 1
                 if retry_nr < self.max_tries:
@@ -73,7 +74,7 @@ class Browser:
         page_number = 0
         while True:
             try:
-                numbers_container = self.driver.find_element_by_xpath("//ul[@class='pagination unstyled d-block d-m-none']")
+                numbers_container = self.driver.find_element(By.XPATH, "//ul[@class='pagination unstyled d-block d-m-none']")
                 numbers = numbers_container.find_elements_by_tag_name('li')
                 for nr in numbers:
                     if 'font-weight-bold' in nr.get_attribute('class'):
@@ -94,7 +95,7 @@ class Browser:
         page_number = 0
         while True:
             try:
-                numbers_container = self.driver.find_element_by_xpath("//ul[@class='pagination unstyled d-block d-m-none']")
+                numbers_container = self.driver.find_element(By.XPATH, "//ul[@class='pagination unstyled d-block d-m-none']")
                 numbers = numbers_container.find_elements_by_tag_name('li')
                 page_number = int(numbers[-1].get_attribute('innerHTML'))
             except:
@@ -112,7 +113,7 @@ class Browser:
         retry_nr = 0
         while True:
             try:
-                nav_buttons = self.driver.find_elements_by_xpath("//button[@class='jum-button pagination-buttons secondary']")
+                nav_buttons = self.driver.find_elements(By.XPATH, "//button[@class='jum-button pagination-buttons secondary']")
                 next_page_button = nav_buttons[-1]
             except:
                 retry_nr += 1
@@ -129,7 +130,7 @@ class Browser:
         retry_nr = 0
         while True:
             try:
-                cookies_button = self.driver.find_element_by_id('onetrust-accept-btn-handler')
+                cookies_button = self.driver.find_element(By.ID, 'onetrust-accept-btn-handler')
             except:
                 if retry_nr < self.max_tries:
                     print('Cant find next_page_button, retrying...')
@@ -143,11 +144,22 @@ class Browser:
     def click_warning_message(self):
         actions = ActionChains(self.driver)
         try:
-            warning_message_1 = self.driver.find_element_by_xpath("//button[@class='jum-button close tertiary icon']")
-            warning_message_2 = self.driver.find_element_by_xpath("//div[@class='notification compact']")
-            actions.move_to_element(warning_message_2).click().perform()
-            actions.move_to_element(warning_message_1).click().perform()
-            actions.move_to_element(warning_message_2).click().perform()
-
+            warning_message = self.driver.find_element(By.XPATH, "//button[@class='jum-button close tertiary icon']")
+            actions.move_to_element(warning_message).click().perform()
         except:
+            print("No warning message is found")
+        # try:
+        #     warning_box = self.driver.find_element(By.XPATH, "//div[@class='notification compact']")
+        #     actions.move_to_element(warning_box).click().perform()
+        #     warning_message = self.driver.find_element(By.XPATH,"//button[@class='jum-button close tertiary icon']")
+        #     actions.move_to_element(warning_message).click().perform()
+        # except:
+        #     print("No warning message is found")
+        try:
+            notification = self.driver.find_element(By.CLASS_NAME, 'notification')
+            notification.click()
+            warning_message = self.driver.find_element(By.XPATH,"//button[@class='jum-button close tertiary icon']")
+            warning_message.click()
+        except:
+
             print("No warning message is found")

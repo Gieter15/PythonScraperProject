@@ -10,7 +10,6 @@ class JumboProductsScraper():
     
     def __init__(self) -> None:
 
-        #TODO: make this into a class for extra fancy points?
         base_url = 'https://www.jumbo.com/producten/'
         #base_url = 'https://www.jumbo.com/producten/?offSet=2400&pageSize=25'
         db_folder = 'databases'
@@ -102,8 +101,11 @@ class JumboProductsScraper():
 
                 elif 'gratis' in product_text:
                     try:
-                        p.price_int = int(lines[2])
-                        p.price_frac = int(lines[3])
+                        for i, line in enumerate(lines):
+                            if not line.upper().isupper() and ',' not in line: #Check if no characters in string, check for the comma in case of 15,30
+                                p.price_int = int(line)
+                                p.price_frac = int(lines[i+1])
+                                break
                         p.sale = 1
                         p.url = browser.find_product_url(html_product)
                         p.product_id = p.url.split('/')[-1]
@@ -113,8 +115,13 @@ class JumboProductsScraper():
 
                 else:
                     try:
-                        p.price_int = int(lines[1])
-                        p.price_frac = int(lines[2])
+                        for i, line in enumerate(lines):
+                            if not line.upper().isupper() and ',' not in line: #Check if no characters in string, check for the comma in case of 15,30
+                                p.price_int = int(line)
+                                p.price_frac = int(lines[i+1])
+                                break
+                        # p.price_int = int(lines[-3])
+                        # p.price_frac = int(lines[-2])
                         p.url = browser.find_product_url(html_product)
                         p.product_id = p.url.split('/')[-1]
                     except:

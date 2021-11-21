@@ -14,6 +14,8 @@ class ProductsDB:
         self.connection = None
         self.cursor = None
 
+        self.start_db_connection()
+
     def start_db_connection(self):
         if os.path.exists(os.path.join(self.db_folder,self.db_name)):
             self.connection = sqlite3.connect(os.path.join(self.db_folder,self.db_name))
