@@ -8,14 +8,14 @@ from objects.browser import Browser
 
 class JumboProductsScraper():
     
-    def __init__(self) -> None:
+    def __init__(self, headless=False) -> None:
 
         base_url = 'https://www.jumbo.com/producten/'
         #base_url = 'https://www.jumbo.com/producten/?offSet=2400&pageSize=25'
         db_folder = 'databases'
         db_name = 'products.db'
         table_name = 'JUMBO_PRODUCTS'
-        headless = False
+
         clean_table = False
 
         sale_1 = "[0-9] voor [0-9],[0-9]{2} euro"
@@ -172,4 +172,4 @@ class JumboProductsScraper():
 
 
 if __name__ == '__main__':
-    JumboProductsScraper()
+    JumboProductsScraper(headless=False)

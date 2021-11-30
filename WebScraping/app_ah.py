@@ -13,7 +13,7 @@ import re
 class AhProductsScraper():
 #TODO: add product category. Add amount of product, now there will be unclear titles
 
-    def __init__(self) -> None:
+    def __init__(self, headless) -> None:
         #api_url = https://www.ah.nl/features/api/mega-menu/products
         self.base_url = 'https://www.ah.nl/producten'
         self.db_folder = 'databases'
@@ -21,7 +21,7 @@ class AhProductsScraper():
         self.table_name = 'AH_PRODUCTS'
         self.clean_table = False
         self.max_tries = 2
-        self.headless = True
+        self.headless = headless
         
         start_time = datetime.now()
         sale_1 = "[0-9] \+ [0-9] GRATIS"
@@ -38,8 +38,6 @@ class AhProductsScraper():
 
         db_connection.create_ah_table()
 
-
-        
         browser = Browser(headless=self.headless)
         browser.get_url(self.base_url)
         driver = browser.driver
@@ -228,4 +226,4 @@ class AhProductsScraper():
 
 
 if __name__ == '__main__':
-    AhProductsScraper()
+    AhProductsScraper(headless=False)

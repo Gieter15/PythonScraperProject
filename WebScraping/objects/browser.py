@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+import time
 
 class Browser:
     #constructor
@@ -158,8 +159,11 @@ class Browser:
         try:
             notification = self.driver.find_element(By.CLASS_NAME, 'notification')
             notification.click()
+            time.sleep(0.5)
             warning_message = self.driver.find_element(By.XPATH,"//button[@class='jum-button close tertiary icon']")
             warning_message.click()
+            time.sleep(0.5)
         except:
 
             print("No warning message is found")
+        return

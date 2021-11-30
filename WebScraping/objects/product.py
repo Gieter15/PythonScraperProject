@@ -9,7 +9,6 @@ class Product:
         self.url = url
         self.sale = sale
 
-
     def get_price(self):
         return self.price_int + self.price_frac/100
 

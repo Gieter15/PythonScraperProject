@@ -9380,3 +9380,154 @@ TimedPromise/<@chrome://marionette/content/sync.js:237:19
 TimedPromise@chrome://marionette/content/sync.js:222:10
 interaction.flushEventLoop@chrome://marionette/content/interaction.js:431:10
 webdriverClickElement@chrome://marionette/content/interaction.js:179:31
+1637515117580	geckodriver	INFO	Listening on 127.0.0.1:65401
+1637515120632	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofiletaTShm"
+1637515121457	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637515125957	Marionette	INFO	Listening on port 65413
+1637515126244	Marionette	WARN	TLS certificate errors will be ignored for this session
+1637515165606	geckodriver	INFO	Listening on 127.0.0.1:50073
+1637515168634	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofileij8Hmw"
+1637515169009	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637515171700	Marionette	INFO	Listening on port 50085
+[Parent 11716, IPC I/O Parent] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:167
+1637515171920	Marionette	WARN	TLS certificate errors will be ignored for this session
+1637515176594	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:237:19
+TimedPromise@chrome://marionette/content/sync.js:222:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:431:10
+webdriverClickElement@chrome://marionette/content/interaction.js:179:31
+1637515257515	geckodriver	INFO	Listening on 127.0.0.1:59247
+1637515260579	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofile2DJO7K"
+1637515260901	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637515263178	Marionette	INFO	Listening on port 59257
+1637515263283	Marionette	WARN	TLS certificate errors will be ignored for this session
+1637515371830	geckodriver	INFO	Listening on 127.0.0.1:58781
+1637515374867	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofileykeOgd"
+*** You are running in headless mode.
+1637515375191	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637515376119	Marionette	INFO	Listening on port 58789
+1637515376427	Marionette	WARN	TLS certificate errors will be ignored for this session
+1637515379765	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:237:19
+TimedPromise@chrome://marionette/content/sync.js:222:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:431:10
+webdriverClickElement@chrome://marionette/content/interaction.js:179:31
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 2534 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+1637515636934	geckodriver	INFO	Listening on 127.0.0.1:57081
+1637515640024	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofilesXVNzQ"
+*** You are running in headless mode.
+1637515640347	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637515641165	Marionette	INFO	Listening on port 62715
+1637515641597	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 1614 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+Exiting due to channel error.
+--headless" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofileXn6fRh"
+*** You are running in headless mode.
+1637515691857	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637515692772	Marionette	INFO	Listening on port 61320
+1637515693130	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 6952 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 2671 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 2579 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 1718 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 6472 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 1697 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 3223 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 2292 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 1277 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 7445 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 6551 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 2218 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 958 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 1758 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 353 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 7621 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 7802 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/W74_wbIuhH6bObXj0uCjode8PwiBrxgOKnAqo6ShAmY.js line 1 > eval line 4439 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1637517527712	Marionette	INFO	Stopped listening on port 61320
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+1637849343542	geckodriver	INFO	Listening on 127.0.0.1:61632
+1637849346632	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofileyydBd2"
+1637849347186	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637849349089	Marionette	INFO	Listening on port 61640
+1637849349311	Marionette	WARN	TLS certificate errors will be ignored for this session
+1637859005638	geckodriver	INFO	Listening on 127.0.0.1:56012
+1637859008717	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofile8adHiM"
+1637859009732	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637859012220	Marionette	INFO	Listening on port 56020
+1637859012430	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: (new TypeError("currentNode is null", "resource://devtools/client/inspector/shared/style-change-tracker.js", 66))
+TypeError: currentNode is null: canMutationImpactCurrentStyles@resource://devtools/client/inspector/shared/style-change-tracker.js:66:20
+onMutations@resource://devtools/client/inspector/shared/style-change-tracker.js:84:41
+_emit@resource://devtools/shared/event-emitter.js:226:34
+emit@resource://devtools/shared/event-emitter.js:172:18
+emit@resource://devtools/shared/event-emitter.js:324:18
+getMutations@resource://devtools/client/fronts/walker.js:358:10
+
+1637859312169	geckodriver	INFO	Listening on 127.0.0.1:56163
+1637859315229	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofileynQHCk"
+1637859315735	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637859317621	Marionette	INFO	Listening on port 56171
+1637859317940	Marionette	WARN	TLS certificate errors will be ignored for this session
+1637859388519	geckodriver	INFO	Listening on 127.0.0.1:56275
+1637859391617	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofile5jnYZF"
+*** You are running in headless mode.
+1637859392036	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637859393076	Marionette	INFO	Listening on port 56283
+1637859393190	Marionette	WARN	TLS certificate errors will be ignored for this session
+1637859408162	geckodriver	INFO	Listening on 127.0.0.1:56356
+1637859411285	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--kiosk-printing" "window-size=1920,1080" "-foreground" "-no-remote" "-profile" "C:\\Users\\groot\\AppData\\Local\\Temp\\rust_mozprofilelKCZ4g"
+1637859411728	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637859413625	Marionette	INFO	Listening on port 56365
+1637859413977	Marionette	WARN	TLS certificate errors will be ignored for this session
