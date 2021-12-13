@@ -226,4 +226,4 @@ class AhProductsScraper():
 
 
 if __name__ == '__main__':
-    AhProductsScraper(headless=False)
+    AhProductsScraper(headless=True)

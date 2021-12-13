@@ -5,13 +5,14 @@ import re
 from objects.product import Product
 from objects.productsDB import ProductsDB
 from objects.browser import Browser
+from selenium.webdriver.common.action_chains import ActionChains
 
 class JumboProductsScraper():
     
     def __init__(self, headless=False) -> None:
 
-        base_url = 'https://www.jumbo.com/producten/'
-        #base_url = 'https://www.jumbo.com/producten/?offSet=2400&pageSize=25'
+        # base_url = 'https://www.jumbo.com/producten/'
+        base_url = 'https://www.jumbo.com/producten/?offSet=2400&pageSize=25'
         db_folder = 'databases'
         db_name = 'products.db'
         table_name = 'JUMBO_PRODUCTS'
@@ -48,6 +49,7 @@ class JumboProductsScraper():
         number_of_pages = browser.find_number_of_pages()
         print('number_of_pages: {}'.format(number_of_pages))
 
+        products = []
         page_number = 0
         last_page = False
         while not last_page:
@@ -55,7 +57,13 @@ class JumboProductsScraper():
             last_page = page_number == number_of_pages
             print("***page number {0} ***".format(page_number))
 
+            last_product = products[-1] if products else None
             products = browser.find_products()
+            
+            while last_product and len(products) > 0 and last_product == products[-1]:
+                products = browser.find_products()
+                print("products not properly refresed, retrying...")
+                time.sleep(3)
 
             for html_product in products:
 
@@ -145,10 +153,15 @@ class JumboProductsScraper():
                     else: 
                         print("***********Problem with product {0} on page {1}, product text = {2} price = {3},{4}".format( p.title, page_number, product_text, p.price_int, p.price_frac))
                         print(html_product.get_attribute('outerHTML'))
+                        print('page number = {0}'.format(page_number))
+                        print('found page number = {0}'.format(browser.find_current_page_number()))
+
                 except:            
                     print('***Could not insert product: {0} with number {1}, skipping it***'.format(p.title, p.id))
                     raise    
             while page_number == browser.find_current_page_number() and page_number != last_page:
+                actions = ActionChains(browser.driver)
+                # actions.click(next_page_button).perform()
                 next_page_button.click()
                 time.sleep(3)
             
@@ -162,7 +175,7 @@ class JumboProductsScraper():
                 cookies_button = browser.find_cookies_button()
                 cookies_button.click()
                 next_page_button = browser.find_next_page_button()
-                warning_message = browser.click_warning_message()
+                browser.click_warning_message()
 
         browser.close()
         print("***Data scraping completed. {0} pages scanned with {1} products.".format(i, i*25))
@@ -172,4 +185,4 @@ class JumboProductsScraper():
 
 
 if __name__ == '__main__':
-    JumboProductsScraper(headless=False)
+    JumboProductsScraper(headless=True)
