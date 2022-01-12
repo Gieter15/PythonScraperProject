@@ -17,11 +17,12 @@ class ProductsDB:
         self.start_db_connection()
 
     def start_db_connection(self):
-        if os.path.exists(os.path.join(self.db_folder,self.db_name)):
+        if os.path.exists(os.path.join(self.db_folder)):
             self.connection = sqlite3.connect(os.path.join(self.db_folder,self.db_name))
             self.cursor = self.connection.cursor()
+            print('Connected to database: {}'.format(self.db_name))
         else:
-            logging.warning("Cannot find path")
+            logging.warning("Cannot find chosen db_folder")
 
     def create_ah_table(self):
         qry = '''CREATE TABLE IF NOT EXISTS {}

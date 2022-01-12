@@ -1,4 +1,5 @@
 from selenium import webdriver
+import selenium
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
@@ -26,6 +27,7 @@ class Browser:
         self.driver = driver 
 
     def get_url(self, url):
+        print('Navigating to url: {}'.format(url))
         self.driver.get(url)
 
     def get_current_url(self):
@@ -37,11 +39,11 @@ class Browser:
     def delete_all_cookies(self):
         self.driver.delete_all_cookies()
 
-    def find_product_url(self, input_product):
+    def find_product_url(self, input_product) -> str:
         retry_nr = 0
         while True:
             try:
-                url = input_product.find_element_by_tag_name('a').get_attribute('href')
+                url = input_product.find_element(By.TAG_NAME, 'a').get_attribute('href')
             except:
                 retry_nr += 1
                 if retry_nr < self.max_tries:
@@ -54,7 +56,7 @@ class Browser:
             break
         return url
 
-    def find_products(self):
+    def find_products(self) -> list:
         retry_nr = 0
         while True:
             try:
@@ -75,11 +77,8 @@ class Browser:
         page_number = 0
         while True:
             try:
-                numbers_container = self.driver.find_element(By.XPATH, "//ul[@class='pagination unstyled d-block d-m-none']")
-                numbers = numbers_container.find_elements_by_tag_name('li')
-                for nr in numbers:
-                    if 'font-weight-bold' in nr.get_attribute('class'):
-                        page_number = int(nr.get_attribute('innerHTML'))
+                current_page_html = self.driver.find_element(By.XPATH, "//button[@class='page selected']")
+                page_number = int(current_page_html.text)
             except:
                 retry_nr += 1
                 if retry_nr < self.max_tries:
@@ -96,9 +95,9 @@ class Browser:
         page_number = 0
         while True:
             try:
-                numbers_container = self.driver.find_element(By.XPATH, "//ul[@class='pagination unstyled d-block d-m-none']")
-                numbers = numbers_container.find_elements_by_tag_name('li')
-                page_number = int(numbers[-1].get_attribute('innerHTML'))
+                html_pages = self.driver.find_elements(By.XPATH, "//button[@class='page']")
+                last_html = html_pages[-1]
+                page_number = int(last_html.text)
             except:
                 retry_nr += 1
                 if retry_nr < self.max_tries:
@@ -114,7 +113,7 @@ class Browser:
         retry_nr = 0
         while True:
             try:
-                nav_buttons = self.driver.find_elements(By.XPATH, "//button[@class='jum-button pagination-buttons secondary']")
+                nav_buttons = self.driver.find_elements(By.XPATH, "//button[@class='jum-button pagination-button secondary']")
                 next_page_button = nav_buttons[-1]
             except:
                 retry_nr += 1
@@ -132,6 +131,22 @@ class Browser:
         while True:
             try:
                 cookies_button = self.driver.find_element(By.ID, 'onetrust-accept-btn-handler')
+            except:
+                if retry_nr < self.max_tries:
+                    print('Cant find next_page_button, retrying...')
+                    continue
+                else:
+                    print('Maximum amount of tries reached for next_page_button, aborting...')
+                    break
+            break
+        return cookies_button
+
+    def click_cookies_button_dirk(self):
+        retry_nr = 0
+        while True:
+            try:
+                cookies_button = self.driver.find_element(By.CLASS_NAME, 'large-banner__button')
+                cookies_button.click()
             except:
                 if retry_nr < self.max_tries:
                     print('Cant find next_page_button, retrying...')
