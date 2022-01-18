@@ -4,8 +4,9 @@ import os
 from objects.product import Product
 import logging
 
+
 class ProductsDB:
-    #constructor
+    # constructor
     def __init__(self, db_folder, db_name, table_name) -> None:
         self.db_folder = db_folder
         self.db_name = db_name
@@ -18,11 +19,17 @@ class ProductsDB:
 
     def start_db_connection(self):
         if os.path.exists(os.path.join(self.db_folder)):
-            self.connection = sqlite3.connect(os.path.join(self.db_folder,self.db_name))
+            self.connection = sqlite3.connect(
+                os.path.join(self.db_folder, self.db_name))
             self.cursor = self.connection.cursor()
             print('Connected to database: {}'.format(self.db_name))
         else:
             logging.warning("Cannot find chosen db_folder")
+
+    def end_db_connection(self):
+        self.connection.close()
+        print('database connection {} closed'.format(self.db_name))
+        return
 
     def create_ah_table(self):
         qry = '''CREATE TABLE IF NOT EXISTS {}
@@ -62,7 +69,8 @@ class ProductsDB:
     def insert_into_ah_db(self, product):
         self.start_db_connection() if not self.connection else 0
         insert_date = datetime.now()
-        product.id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
+        product.id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(
+            insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
         try:
             qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
             VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
@@ -73,7 +81,8 @@ class ProductsDB:
 
     def update_ah_product(self, product):
         insert_date = datetime.now()
-        product.id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
+        product.id = int(str(product.product_id) + str(insert_date.isocalendar()[0]) + str(
+            insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
         qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
         VALUES ({1}, {2}, "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
         self.cursor.execute(qry)
@@ -82,7 +91,8 @@ class ProductsDB:
     def insert_into_jumbo_db(self, product):
         self.start_db_connection() if not self.connection else 0
         insert_date = datetime.now()
-        product.id = str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
+        product.id = str(product.product_id) + str(insert_date.isocalendar()[0]) + str(
+            insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
         try:
             qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
             VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}','{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
@@ -94,21 +104,23 @@ class ProductsDB:
     def update_jumbo_product(self, product):
         self.start_db_connection() if not self.connection else 0
         insert_date = datetime.now()
-        product.id = str(product.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
+        product.id = str(product.product_id) + str(insert_date.isocalendar()[0]) + str(
+            insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2])
         qry = '''INSERT OR IGNORE INTO {0} (id, product_id, product_name, price_int, price_frac, sale, product_url, date_created, date_modified) 
-        VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)  
+        VALUES ('{1}','{2}', "{3}", {4}, {5}, {6}, "{7}", '{8}', '{9}');'''.format(self.table_name, product.id, product.product_id, product.title, product.price_int, product.price_frac, product.sale, product.url, insert_date, insert_date)
         self.cursor.execute(qry)
         self.connection.commit()
 
-
     def get_all_products(self):
         self.start_db_connection() if not self.connection else 0
-        qry = '''SELECT count(*) FROM sqlite_master WHERE type='table' AND name='{0}';'''.format(self.table_name)
+        qry = '''SELECT count(*) FROM sqlite_master WHERE type='table' AND name='{0}';'''.format(
+            self.table_name)
         run_query = self.cursor.execute(qry).fetchall()
 
         if (run_query[0][0]):
-            qry = '''SELECT product_id, price_int, price_frac FROM {} ORDER BY date_modified DESC'''.format(self.table_name)
-            temp_products = self.cursor.execute(qry).fetchall() 
+            qry = '''SELECT product_id, price_int, price_frac FROM {} ORDER BY date_modified DESC'''.format(
+                self.table_name)
+            temp_products = self.cursor.execute(qry).fetchall()
             self.products = list([list(prd) for prd in temp_products])
         return self.products
 
@@ -140,5 +152,5 @@ class ProductsDB:
         pass
 
 
-if __name__== "__main__":
+if __name__ == "__main__":
     db = ProductsDB('test.db', 'test_table')

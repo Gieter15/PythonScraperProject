@@ -7,20 +7,20 @@ import time
 from datetime import datetime, date
 import csv
 
+
 class DirkProductsScraper():
-#TODO: add product category. Add amount of product, now there will be unclear titles
+    # TODO: add product category. Add amount of product, now there will be unclear titles
 
     def __init__(self, headless) -> None:
         self.base_url = 'https://www.dirk.nl/boodschappen'
         db_folder = 'databases'
-        db_name = 'test.db'
+        db_name = 'products.db'
         db_table_name = 'DIRK_PRODUCTS'
         csv_folder = 'csv_files'
         csv_file_prefix = 'dirk_products'
         self.clean_table = False
         self.max_tries = 3
         self.headless = headless
-        
 
         start_time = datetime.now()
 
@@ -31,12 +31,13 @@ class DirkProductsScraper():
         browser.click_cookies_button_dirk()
 
         urls = self.find_product_category_links(driver)
-        all_products = []   
         for i, url in enumerate(urls):
+            all_products = []
             browser.get_url(url)
             time.sleep(1)
             product_category = url.split('/')[-1]
-            print('({}/{}) Product category: {}'.format(i+1, len(urls), product_category))
+            print('({}/{}) Product category: {}'.format(i +
+                  1, len(urls), product_category))
 
             sub_urls = self.find_product_category_links(driver)
 
@@ -44,7 +45,7 @@ class DirkProductsScraper():
                 browser.get_url(sub_url)
                 time.sleep(1)
                 product_sub_category = sub_url.split('/')[-1]
-                print('({}/{}) Product sub category: {}'.format(j+1, len(sub_urls), product_sub_category))
+                print('({}/{}) Product sub category: {}'.format(j + 1, len(sub_urls), product_sub_category))
                 time.sleep(1)
                 html_products = self.find_products(driver)
                 self.updates = 0
@@ -55,14 +56,15 @@ class DirkProductsScraper():
                     product = self.analyze_html_product(html_product)
                     if product and product.product_id not in [p.product_id for p in all_products]:
                         all_products.append(product)
-                        print('({}/{})  €{},{}\t{}.'.format(i+1, len(html_products), product.price_int, product.price_frac,product.title))
+                        print('({}/{})  €{},{}\t{}.'.format(i+1, len(html_products),
+                              product.price_int, product.price_frac, product.title))
                     elif product and product.product_id in [p.product_id for p in all_products]:
-                        print('({}/{})  product {} already in list'.format(i+1, len(html_products), product.title))
+                        print('({}/{})  product {} already in list'.format(i + 1, len(html_products), product.title))
                     else:
                         print('Error finding {} product from {}'.format(i, html_product.text))
-        
-        self.store_products_as_csv(all_products, csv_folder, csv_file_prefix)
-        
+
+            self.store_products_in_database(all_products, db_folder, db_name, db_table_name)
+
         print('{0} products analyzed, inserts: {1}, updates: {2}, untouched: {3}'.format(i+1, self.inserts, self.updates, self.untouched))
 
         driver.close()
@@ -70,7 +72,6 @@ class DirkProductsScraper():
         end_time = datetime.now()
         total_time = end_time - start_time
         print('Total running time: {}'.format(total_time))
-
 
     def store_products_in_database(self, products: list[Product], db_folder, db_name, db_table_name):
         db_connection = ProductsDB(db_folder, db_name, db_table_name)
@@ -81,11 +82,13 @@ class DirkProductsScraper():
         all_products = db_connection.get_all_products()
         product_ids = db_connection.get_all_product_ids()
 
-        print('Storing products in database {}, table {}.'.format(db_name, db_table_name))
+        print('Storing products in database {}, table {}.'.format(
+            db_name, db_table_name))
         insert_date = datetime.now()
         for p in products:
             try:
-                p.id = int(str(p.product_id) + str(insert_date.isocalendar()[0]) + str(insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
+                p.id = int(str(p.product_id) + str(insert_date.isocalendar()[0]) + str(
+                    insert_date.isocalendar()[1]) + str(insert_date.isocalendar()[2]))
                 if p.product_id != -1 and p.product_id not in product_ids:
                     db_connection.insert_into_ah_db(p)
                     # print('Product: {0} inserted into table with price {1},{2}'.format(p.title, p.price_int, p.price_frac))
@@ -103,24 +106,29 @@ class DirkProductsScraper():
                     # print('Product: {0} already exists in table with same price, record date_modified updated'.format(p.title))
                     self.untouched += 1
             except:
-                print('***Could not insert product: {0} with number {1}, skipping it***'.format(p.title, p.id))
+                print(
+                    '***Could not insert product: {0} with number {1}, skipping it***'.format(p.title, p.id))
                 raise
 
+        db_connection.end_db_connection()
+        return
+
     def store_products_as_csv(self, products: list[Product], file_prefix: str, folder: str):
-        file_name = file_prefix + '_' + str(date.today().strftime("%Y%m%d")) + '.csv'
+        file_name = file_prefix + '_' + \
+            str(date.today().strftime("%Y%m%d")) + '.csv'
 
         mkdir(folder) if not path.exists(folder) else None
 
         with open(path.join(folder, file_name), 'a', newline='') as f:
             for p in products:
                 csv_writer = csv.writer(f, delimiter=',')
-                csv_writer.writerow([p.product_id, p.title, p.price_int, p.price_frac, p.url])
+                csv_writer.writerow(
+                    [p.product_id, p.title, p.price_int, p.price_frac, p.url])
                 # print('Product: {0} inserted into table with price {1},{2}'.format(p.title, p.price_int, p.price_frac))
             return
-                      
 
     def analyze_html_product(self, html_product):
-        
+
         if not 'ACTIE' in html_product.text:
             p = Product()
             price = self.get_current_price(html_product)
@@ -140,7 +148,8 @@ class DirkProductsScraper():
         prd_title = ''
         while True:
             try:
-                prd_title = input_product.find_element(By.CLASS_NAME, 'product-card__name').text
+                prd_title = input_product.find_element(
+                    By.CLASS_NAME, 'product-card__name').text
             except:
                 retry_nr += 1
                 if retry_nr < self.max_tries:
@@ -156,7 +165,8 @@ class DirkProductsScraper():
         retry_nr = 0
         while True:
             try:
-                url = input_product.find_element(By.CLASS_NAME, 'product-card__name').get_attribute('href')
+                url = input_product.find_element(
+                    By.CLASS_NAME, 'product-card__name').get_attribute('href')
             except:
                 retry_nr += 1
                 if retry_nr < self.max_tries:
@@ -175,8 +185,10 @@ class DirkProductsScraper():
         price_frac = -1
         while True:
             try:
-                price_int = html_product.find_element(By.CLASS_NAME, "product-card__price__euros").text
-                price_frac = html_product.find_element(By.CLASS_NAME, "product-card__price__cents").text
+                price_int = html_product.find_element(
+                    By.CLASS_NAME, "product-card__price__euros").text
+                price_frac = html_product.find_element(
+                    By.CLASS_NAME, "product-card__price__cents").text
             except:
                 retry_nr += 1
                 if retry_nr < self.max_tries:
@@ -194,8 +206,10 @@ class DirkProductsScraper():
         products = []
         while True:
             try:
-                container = input_driver.find_element(By.CLASS_NAME, "products-wrapper")
-                products = container.find_elements(By.CLASS_NAME, "product-card")
+                container = input_driver.find_element(
+                    By.CLASS_NAME, "products-wrapper")
+                products = container.find_elements(
+                    By.CLASS_NAME, "product-card")
             except:
                 retry_nr += 1
                 time.sleep(1)
@@ -213,8 +227,10 @@ class DirkProductsScraper():
         urls = []
         while True:
             try:
-                category_container = input_driver.find_element(By.CLASS_NAME, "product-category-header__nav")
-                categories = category_container.find_elements(By.TAG_NAME, "li")
+                category_container = input_driver.find_element(
+                    By.CLASS_NAME, "product-category-header__nav")
+                categories = category_container.find_elements(
+                    By.TAG_NAME, "li")
                 for category in categories:
                     a = category.find_element(By.TAG_NAME, "a")
                     url = a.get_attribute('href')

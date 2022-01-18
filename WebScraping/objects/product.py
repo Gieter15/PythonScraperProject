@@ -1,13 +1,13 @@
 class Product:
     #constructor
     def __init__(self, id ='', product_id = '', title = '', price_int = -1, price_frac = -1, url = '', sale = 0) -> None:
-        self.id = id
-        self.title = title
-        self.product_id = product_id
-        self.price_int = price_int
-        self.price_frac = price_frac
-        self.url = url
-        self.sale = sale
+        self.id:str = id
+        self.title:str = title
+        self.product_id:str = product_id
+        self.price_int:int = price_int
+        self.price_frac:int = price_frac
+        self.url:str = url
+        self.sale:int = sale
 
     def get_price(self):
         return self.price_int + self.price_frac/100
