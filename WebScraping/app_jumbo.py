@@ -75,7 +75,7 @@ class JumboProductsScraper():
                 actions = ActionChains(self.browser.driver)
                 # actions.click(next_page_button).perform()
                 next_page_button.click()
-                time.sleep(2)
+                time.sleep(3)
 
             if page_number % 100 == 0:  # delete all cookies every 100 pages
                 current_url = self.browser.get_current_url()
@@ -255,4 +255,4 @@ class JumboProductsScraper():
 
 
 if __name__ == '__main__':
-    JumboProductsScraper(headless=False)
+    JumboProductsScraper(headless=True)
